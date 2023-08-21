@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar"></nav>
+                <div class="page-content container-fluid">
+                    <div class="form">
+                        <div class="card o-hidden border-0 shadow-lg mb-5 w-50">
+                            <div class="card-body p-0">
+                                <div class="login-card-body">
+                                    <div class="text-left">
+                                    	<h1 class="manage-form-ttl" 
+                                    		th:text="${action} == 'create' ? 'Create New Course' : 'Update Course Information'">
+                                    	</h1>
+                                        <div class="mb-4" th:text="${action} == 'create' ? 'Add New Course' : 'Update Course Information'"></div>
+                                    </div>
+                                    <form 
+                                    	class="user caps-form"
+                                    	th:object="${course}"
+								    	th:action="@{{baseURL}(baseURL=${#request.getRequestURI()})}" 
+								    	th:method="${action} == 'create' ? POST : PUT">
+								    	<input type="hidden" th:if="${action} == 'create'" th:field="*{id}" value=null />
+                                        <div class="form-group">
+                                            <label for="courseName">Course Name</label>
+                                            <input type="text" class="form-control form-control-user" id="courseName"
+                                                placeholder="Enter Course Name"
+                                                name="courseName" th:field="*{courseName}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseName')}" th:errors="*{courseName}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <input type="text" class="form-control form-control-user" id="description"
+                                                placeholder="Enter Course Description"
+                                                name="description" th:field="*{description}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lecturer">Lecturer</label>
+                                            <select th:field="*{lecturer.id}" id="lecturer" class="form-control" style="font-size: 0.8rem; padding: .375rem .75rem; height: 50px;">
+												<option selected value="">Select Lecturer</option>
+						                		<option
+						                			th:each="lecturer: ${lecturerList}" 
+						                			th:text="${lecturer.code} + ' - ' + ${lecturer.firstName} + ' ' + ${lecturer.lastName}"
+						                			th:value="${lecturer.id}">
+						                		</option>
+						                	</select>
+						                	<span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('lecturer.id')}" th:errors="*{lecturer.id}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="courseCredits">Credits</label>
+                                            <input type="number" class="form-control form-control-user" id="courseCredits"
+                                                placeholder="Enter Course Credits"
+                                                name="courseCredits" th:field="*{courseCredits}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseCredits')}" th:errors="*{courseCredits}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="courseCapacity">Capacity</label>
+                                            <input type="number" class="form-control form-control-user" id="courseCapacity"
+                                                placeholder="Enter Course Capacity"
+                                                name="courseCapacity" th:field="*{courseCapacity}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseCapacity')}" th:errors="*{courseCapacity}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="courseFee">Course Fee</label>
+                                            <input type="number" class="form-control form-control-user" id="courseFee"
+                                                placeholder="Enter Course Fee"
+                                                name="courseFee" th:field="*{courseFee}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseFee')}" th:errors="*{courseFee}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="courseStartDate">Start Date</label>
+                                            <input type="date" class="form-control form-control-user" id="courseStartDate"
+                                                name="courseStartDate" th:field="*{courseStartDate}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseStartDate')}" th:errors="*{courseStartDate}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="courseDuration">Duration</label>
+                                            <input type="number" class="form-control form-control-user" id="courseDuration"
+                                                placeholder="Enter Course Duration"
+                                                name="courseDuration" th:field="*{courseDuration}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('courseDuration')}" th:errors="*{courseDuration}"></span>
+                                        </div>
+                                        <div class="btn-blk d-flex justify-content-end">
+                                            <a class="btn btn-outline-danger btn-user mr-3"
+                                            	th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}">
+                                                Cancel
+                                            </a>
+                                            <input type="submit" 
+                                            	class="btn btn-primary btn-user"
+                                            	th:value="${action} == 'create' ? 'Create' : 'Save'" />
+                                        </div>
+                                        <hr>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

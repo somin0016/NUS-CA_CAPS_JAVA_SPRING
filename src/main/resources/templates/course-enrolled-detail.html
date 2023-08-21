@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar" />
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar" />
+                <div class="page-content container-fluid" th:object="${course}">
+                    <h2 class="mb-3 manage-form-ttl">
+                        <span th:text="${enrollment.course.courseName}" />
+                    </h2>
+                    <div class="course-content row">
+                        <div class="col-8">
+                            <div class="card o-hidden border-0 shadow-lg mb-3">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                                Description
+                                            </div>
+                                            <div class="mb-4">
+                                                <span th:text="${enrollment.course.description}" />
+                                            </div>
+                                        </div>
+                                        <div class="course-overview">
+                                            <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                                Overview
+                                            </div>
+                                            <div class="course-info">
+                                                <!-- DATA TABLE -->
+                                                <table class="table border">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Next Intake</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseStartDate}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Lecturer</th>
+                                                            <td class="w-75">
+                                                            	<span th:text="${enrollment.course.lecturer.title == 0 ? 'Mr.' : (enrollment.course.lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+										                      	<span th:text = "' ' + ${enrollment.course.lecturer.firstName} + ' ' + ${enrollment.course.lecturer.lastName}"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Fees</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseFee}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Duration</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseDuration}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Capacity</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseCapacity}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Vacancy</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseVacancy}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Course Credits</th>
+                                                            <td class="w-75" th:text="${enrollment.course.courseCredits}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Status</th>
+                                                            <td class="w-75" th:switch="${enrollment.course.courseStatus}">
+                                                            	<span
+                                                            		th:if="${today < enrollment.course.courseStartDate}">
+                                                            		Upcoming
+                                                            	</span>
+                                                            	<span
+                                                            		th:if="${today > enrollment.course.courseStartDate && today < enrollment.course.courseEndDate}">
+                                                            		Ongoing
+                                                            	</span>
+                                                            	<span
+                                                            		th:if="${today > enrollment.course.courseEndDate}">
+                                                            		Completed
+                                                            	</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <a th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}" class="btn btn-outline-danger w-25">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card o-hidden shadow-lg mb-5">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-2">
+                                                <span class="mr-1 text-s font-weight-bold">
+                                                    Enrollment Start Date: 
+                                                </span>
+                                                <span th:text="${enrollment.course.enrollmentStartDate}"></span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="mr-1 text-s font-weight-bold">
+                                                    Enrollment End Date: 
+                                                </span>
+                                                <span th:text="${enrollment.course.enrollmentEndDate}"></span>
+                                            </div>
+                                            
+                                            <span
+                                            	th:if="${enrollment.enrollmentStatus == 0}"
+                                            	class="btn btn-light bg-gray w-100 disabled text-uppercase" disabled>
+                                                Pending
+                                            </span>
+                                            <span
+                                            	th:if="${enrollment.enrollmentStatus == 1}"
+                                            	class="btn btn-success w-100 disabled text-uppercase" disabled>
+                                                Accepted
+                                            </span>
+                                            <span
+                                            	th:if="${enrollment.enrollmentStatus == 2}"
+                                            	class="btn btn-danger w-100 disabled text-uppercase" disabled>
+                                                Rejected
+                                            </span>
+                                            <span
+                                            	th:if="${enrollment.enrollmentStatus == 3}"
+                                            	class="btn btn-secondary w-100 disabled text-uppercase" disabled>
+                                                Cancelled
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

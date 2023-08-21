@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head"></head>
+<title th:replace="fragments/layout.html :: title">Landing</title>
+
+<body class="bg-gradient-primary">
+    <!-- Include the session token as a hidden field -->
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <div class="login-card-body">
+                            <div class="text-center">
+                                <div>
+                                    <img th:src="@{/public/images/logo-login.png}" style="height: 72px;" />
+                                </div>
+                                <div class="login-ttl sign-in-txt">
+                                    <span class="h3 mb-2 d-block">
+                                        Login
+                                    </span>
+                                </div>
+                                <div th:switch="${role}" class="mb-4" style="color: #0C71C3;">
+                                    <span th:case="student">Student Login</span>
+                                    <span th:case="lecturer">Lecturer Login</span>
+                                    <span th:case="admin">Administrator Login</span>
+                                </div>
+                            </div>
+                            <div th:switch="${role}">
+                                <form th:case="student" th:action="@{/login/student}" method="POST" th:object="${student}" class="user">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="text" name="email" th:field="*{email}" class="form-control form-control-user"
+                                                placeholder="Enter Student Email">
+                                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="password" name="password" th:field="*{password}"
+                                                class="form-control form-control-user" placeholder="Enter Student Password">
+                                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
+                                    <hr>
+                                </form>
+                                <form th:case="lecturer" th:action="@{/login/lecturer}" method="POST" th:object="${lecturer}" class="user">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="text" name="email" th:field="*{email}" class="form-control form-control-user"
+                                                placeholder="Enter Lecturer Email">
+                                            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="password" name="password" th:field="*{password}"
+                                                class="form-control form-control-user" placeholder="Enter Lecturer Password">
+                                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
+                                    <hr>
+                                </form>
+                                <form th:case="admin" th:action="@{/login/admin}" method="POST" th:object="${admin}" class="user">
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="text" name="username" th:field="*{username}" class="form-control form-control-user"
+                                                placeholder="Enter Admin Username">
+                                            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-group">
+                                        <fieldset>
+                                            <input type="password" name="password" th:field="*{password}"
+                                                class="form-control form-control-user" placeholder="Enter Admin Password">
+                                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="field-error-txt"></span>
+                                        </fieldset>
+                                    </div>
+                                    <input type="submit" class="btn btn-primary btn-user btn-block" value="Login">
+                                    <hr>
+                                </form>
+                                <div class="text-center">
+                                    <span class="small">
+                                        <span class="font-weight-bold">CAPS</span> - developed by Team7
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

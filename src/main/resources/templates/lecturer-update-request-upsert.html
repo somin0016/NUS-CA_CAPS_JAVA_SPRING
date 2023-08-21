@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar"></nav>
+                <div class="page-content container-fluid">
+                    <div class="course-content row">
+                        <div class="col-5">
+                            <div class="card o-hidden border-0 shadow-lg mb-3">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-3 font-weight-bold border-bottom">
+                                                Course Name
+                                            </div>
+                                            <div class="mb-0 text-lg">
+                                                <span th:text="${course.courseName}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-7">
+                            <div class="card o-hidden shadow-lg mb-5">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <form
+		                                    	class="user caps-form"
+		                                    	th:object="${updateRequest}"
+		                                    	th:action="@{{baseURL}(baseURL=${#request.getRequestURI()})}" 
+										    	th:method="${action} == 'create' ? POST : PUT">
+		                                    	<input type="hidden" th:if="${action} == 'create'" th:field="*{id}" value=null />
+			                                    <input type="hidden" name="lecturer" th:value="${lecturer.id}" />
+			                                    <input type="hidden" name="course" th:value="${course.id}" />
+		                                        <div class="form-group">
+		                                            <label for="reason">Reason</label>
+		                                            <textarea class="form-control" style="resize: none;"
+		                                            	name="reason" th:field="*{reason}" cols="10" rows="13"
+		                                            	placeholder="Enter Reason for Request Update">
+		                                            </textarea>
+		                                        </div>
+		                                        
+		                                        <div class="btn-blk d-flex justify-content-end">
+		                                            <a th:href="@{/lecturer/{lecturerId}/request(lecturerId=${session.userId})}"
+		                                            	class="btn btn-outline-danger btn-user mr-3">
+		                                                Cancel
+		                                            </a>
+		                                            <input type="submit" 
+		                                            	class="btn btn-primary btn-user"
+		                                            	th:value="${action} == 'create' ? 'Create' : 'Save'" />
+		                                        </div>
+		                                        <hr>
+		                                    </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar"></nav>
+                <div class="page-content container-fluid">
+                    <div class="form">
+                        <div class="card o-hidden border-0 shadow-lg mb-5 w-50">
+                            <div class="card-body p-0">
+                                <div class="login-card-body">
+                                    <div class="text-left">
+                                    	<h1 class="manage-form-ttl" 
+                                    		th:text="${action} == 'create' ? 'Create Student Account' : 'Update Student Account'">
+                                    	</h1>
+                                        <div class="mb-4" th:text="${action} == 'create' ? 'Add New Student to Course' : 'Update Student Information'"></div>
+                                    </div>
+                                    <form 
+                                    	class="user caps-form"
+                                    	th:object="${student}"
+								    	th:action="@{{baseURL}(baseURL=${#request.getRequestURI()})}"  
+								    	th:method="${action} == 'create' ? POST : PUT">
+								    	<input type="hidden" th:if="${action} == 'create'" th:field="*{id}" value=null />
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control form-control-user" id="email"
+                                                placeholder="Enter Email Address"
+                                                name="email" th:field="*{email}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                        </div>
+                                        <div class="form-group" th:if="${action} == 'create'">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control form-control-user" id="password"
+                                                placeholder="Enter Student Initial Password"
+                                                name="password" th:field="*{password}">
+                                        </div>
+                                        <input type="hidden" th:field="*{password}" />
+                                        <div class="form-group">
+                                            <label for="matricNumber">Matriculation Number</label>
+                                            <input type="text" class="form-control form-control-user" id="matricNumber"
+                                                placeholder="Enter Student Matriculation Number"
+                                                name="matricNumber" th:field="*{matricNumber}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('matricNumber')}" th:errors="*{matricNumber}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" class="form-control form-control-user" id="firstName"
+                                                placeholder="Enter Student First Name"
+                                                name="firstName" th:field="*{firstName}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" class="form-control form-control-user" id="lastName"
+                                                placeholder="Enter Student Last Name"
+                                                name="lastName" th:field="*{lastName}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                        	<label for="gender">Gender</label>
+                                            <fieldset>
+							            		<label>Male</label>
+							                	<input type="radio" 
+							                		name="gender" th:field="*{gender}" th:value="M" id="gender" />
+							            		&nbsp;
+							            		<label>Female</label>
+							            		<input type="radio" 
+							            			name="gender" th:field="*{gender}" th:value="F" id="gender" />
+                                                    <span class="field-error-txt"
+                                                		th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></span>
+							            	</fieldset>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dob">Date of Birth</label>
+                                            <input type="date" class="form-control form-control-user" id="dob"
+                                            	name="dob" th:field="*{dob}">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('dob')}" th:errors="*{dob}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="number" class="form-control form-control-user" id="phone"
+                                            	name="phone" th:field="*{phone}"
+                                                placeholder="Enter Student Phone Number">
+                                                <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                                        </div>
+                                        <div class="btn-blk d-flex justify-content-end">
+                                            <a th:href="@{/{role}/{userId}/student(role=${session.role}, userId=${session.userId})}" class="btn btn-outline-danger btn-user mr-3">
+                                                Cancel
+                                            </a>
+                                            <input type="submit" 
+                                            	class="btn btn-primary btn-user"
+                                            	th:value="${action} == 'create' ? 'Create' : 'Save'" />
+                                        </div>
+                                        <hr>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

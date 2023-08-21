@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar"></div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar"></nav>
+                <div class="page-content container-fluid">
+                    <div class="form">
+                        <div class="card o-hidden border-0 shadow-lg mb-5 w-50">
+                            <div class="card-body p-0">
+                                <div class="login-card-body">
+                                    <div class="text-left">
+                                        <h1 class="manage-form-ttl"
+                                            th:text="${action} == 'create' ? 'Create Lecturer Account' : 'Update Lecturer Account'">
+                                        </h1>
+                                        <div class="mb-4"
+                                            th:text="${action} == 'create' ? 'Add New Lecturer' : 'Update Lecturer Information'">
+                                        </div>
+                                    </div>
+                                    <form class="user caps-form" th:object="${lecturer}"
+                                        th:action="@{{baseURL}(baseURL=${#request.getRequestURI()})}"
+                                        th:method="${action} == 'create' ? POST : PUT">
+                                        <input type="hidden" th:if="${action} == 'create'" th:field="*{id}"
+                                            value=null />
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="text" class="form-control form-control-user" id="email"
+                                                placeholder="Enter Email Address" name="email" th:field="*{email}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                                        </div>
+                                        <div class="form-group" th:if="${action} == 'create'">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control form-control-user" id="password"
+                                                placeholder="Enter Lecturer Initial Password" name="password"
+                                                th:field="*{password}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                                        </div>
+                                        <input type="hidden" th:field="*{password}" />
+                                        <div class="form-group">
+                                            <label for="code">Lecturer Code</label>
+                                            <input type="text" class="form-control form-control-user" id="code"
+                                                placeholder="Enter Lecturer Code" name="code" th:field="*{code}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="title">Title</label>
+                                            <fieldset>
+                                                <label>Mr.</label>
+                                                <input type="radio" name="title" th:field="*{title}" th:value=0
+                                                    id="title" />
+                                                &nbsp;
+                                                <label>Mrs.</label>
+                                                <input type="radio" name="title" th:field="*{title}" th:value=1
+                                                    id="title" />
+                                                &nbsp;
+                                                <label>Ms.</label>
+                                                <input type="radio" name="title" th:field="*{title}" th:value=2
+                                                    id="title" />
+                                            </fieldset>
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="firstName">First Name</label>
+                                            <input type="text" class="form-control form-control-user" id="firstName"
+                                                placeholder="Enter Lecturer First Name" name="firstName"
+                                                th:field="*{firstName}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last Name</label>
+                                            <input type="text" class="form-control form-control-user" id="lastName"
+                                                placeholder="Enter Lecturer Last Name" name="lastName"
+                                                th:field="*{lastName}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="designation">Designation</label>
+                                            <input type="text" class="form-control form-control-user" id="designation"
+                                                placeholder="Enter Lecturer Designation" name="designation"
+                                                th:field="*{designation}">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('designation')}" th:errors="*{designation}"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="phone">Phone</label>
+                                            <input type="number" class="form-control form-control-user" id="phone"
+                                                name="phone" th:field="*{phone}"
+                                                placeholder="Enter Student Phone Number">
+                                            <span class="field-error-txt"
+                                                	th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+                                        </div>
+                                        <div class="btn-blk d-flex justify-content-end">
+                                            <a th:href="@{/{role}/{userId}/lecturer(role=${session.role}, userId=${session.userId})}" class="btn btn-outline-danger btn-user mr-3">
+                                                Cancel
+                                            </a>
+                                            <input type="submit" class="btn btn-primary btn-user"
+                                                th:value="${action} == 'create' ? 'Create' : 'Save'" />
+                                        </div>
+                                        <hr>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

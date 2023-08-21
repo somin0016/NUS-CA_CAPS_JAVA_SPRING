@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+          <!--  HEADER -->
+          <h3 class="mb-3">
+            Manage Students
+          </h3>
+
+          <!-- ACTION ROW -->
+          <div class="d-flex justify-content-between">
+            <a th:if="${session.role == 'admin'}"
+            	th:href="@{{baseURL}/create(baseURL=${#request.getRequestURI()})}" class="btn btn-primary mb-3">
+              <i class="bi bi-person-add"></i>
+              Add New Student
+            </a>
+            <!--
+            <form class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
+              <div class="input-group">
+                <input type="text" class="form-control bg-light small" placeholder="Search for..." aria-label="Search"
+                  aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <i class="fas fa-search fa-sm"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+             -->
+          </div>
+
+          <!-- DATA TABLE -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-9">
+                  <h4 class="card-title font-weight-bold">Student List</h4>
+                </div>
+                <div class="col-md-3">
+                  <a th:if="${session.role == 'admin'}" th:href="@{/admin/}+ ${session.userId} + @{/export/students}" class="btn btn-warning float-right">Export All</a>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table border-bottom" id="data-table">
+                  <thead>
+                    <tr>
+                      <th>Matriculation Number</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Gender</th>
+                      <th>Phone</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="student: ${studentList}">
+                      <td th:text="${student.matricNumber}"></td>
+                      <td th:text="${student.firstName}"></td>
+                      <td th:text="${student.lastName}"></td>
+                      <td th:text="${student.gender}"></td>
+                      <td th:text="${student.phone}"></td>
+                      <td class="table-action">
+                      	<a 
+                      		th:if="${session.role == 'lecturer'}"
+                      		th:with="uri=${#strings.arraySplit(#request.getRequestURI(), '/')}"
+                      		th:href="@{/lecturer/{lecturerId}/course/{courseId}/student/{studentId}/grading/create(lecturerId=${uri[1]}, courseId=${uri[3]}, studentId=${student.id})}">
+                      		<span>Grade</span>
+                      	</a>
+                        <a th:href="@{{baseURL}/update/{studentId}(baseURL=${#request.getRequestURI()}, studentId=${student.id})}" class="btn btn-info">
+                          <span th:text="#{caption.edit}"></span>
+                        </a>
+                        <a th:href="@{{baseURL}/delete/{studentId}(baseURL=${#request.getRequestURI()}, studentId=${student.id})}" class="btn btn-danger">
+                          <span th:text="#{caption.delete}"></span>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

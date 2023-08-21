@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar" />
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar" />
+                <div class="page-content container-fluid" th:object="${course}">
+                    <h2 class="mb-3 manage-form-ttl">
+                        <span th:text="${course.courseName}" />
+                    </h2>
+                    <div class="course-content row">
+                        <div class="col-8">
+                            <div class="card o-hidden border-0 shadow-lg mb-3">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                                Description
+                                            </div>
+                                            <div class="mb-4">
+                                                <span th:text="${course.description}" />
+                                            </div>
+                                        </div>
+                                        <div class="course-overview">
+                                            <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                                Overview
+                                            </div>
+                                            <div class="course-info">
+                                                <!-- DATA TABLE -->
+                                                <table class="table border">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Next Intake</th>
+                                                            <td class="w-75" th:text="${course.courseStartDate}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Lecturer</th>
+                                                            <td class="w-75">
+                                                            	<span th:text="${course.lecturer.title == 0 ? 'Mr.' : (course.lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+										                      	<span th:text = "' ' + ${course.lecturer.firstName} + ' ' + ${course.lecturer.lastName}"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Fees</th>
+                                                            <td class="w-75" th:text="${course.courseFee}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Duration</th>
+                                                            <td class="w-75" th:text="${course.courseDuration}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Capacity</th>
+                                                            <td class="w-75" th:text="${course.courseCapacity}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Vacancy</th>
+                                                            <td class="w-75" th:text="${course.courseVacancy}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Course Credits</th>
+                                                            <td class="w-75" th:text="${course.courseCredits}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Status</th>
+                                                            <td class="w-75" th:switch="${course.courseStatus}">
+                                                                <span th:case=1>Available</span>
+                                                                <span th:case=2>Low Vacancy</span>
+                                                                <span th:case=3>Full</span>
+                                                                <span th:case=4>Cancelled</span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <a th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}" class="btn btn-outline-danger w-25">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card o-hidden shadow-lg mb-5">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-2">
+                                                <span class="mr-1 text-s font-weight-bold">
+                                                    Enrollment Start Date: 
+                                                </span>
+                                                <span th:text="${course.enrollmentStartDate}"></span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <span class="mr-1 text-s font-weight-bold">
+                                                    Enrollment End Date: 
+                                                </span>
+                                                <span th:text="${course.enrollmentEndDate}"></span>
+                                            </div>
+                                            <span
+                                            	th:if="${today < course.enrollmentStartDate}"
+                                            	th:unless="${status == 'enrolled'}"
+                                            	class="btn btn-secondary w-100 disabled text-uppercase bg-info" disabled>
+                                                Not Currently Open
+                                            </span>
+                                            <form
+                                            	th:action="@{{baseURL}/enroll(baseURL=${#request.getRequestURI()})}"
+                                            	th:method="POST"
+                                            	th:unless="${status == 'enrolled' || course.courseStatus == 3}"
+                                            	th:if="${today > course.enrollmentStartDate && today < course.enrollmentEndDate}">
+	                                            <input type="submit" value="Enroll" class="btn btn-primary w-100" />
+                                            </form>
+                                            <span
+                                            	th:if="${today > course.enrollmentEndDate}"
+                                            	th:unless="${status == 'enrolled'}"
+                                            	class="btn btn-secondary w-100 disabled text-uppercase" disabled>
+                                                Enrollment Closed
+                                            </span>
+                                            <span
+                                            	th:if="${status == 'enrolled'}"
+                                            	th:unless="${course.courseStatus == 4}"
+                                            	class="btn btn-secondary w-100 disabled text-uppercase btn-success" disabled>
+                                                Already Enrolled
+                                            </span>
+                                            <span
+                                            	th:if="${course.courseStatus == 4}"
+                                            	class="btn btn-secondary w-100 disabled text-uppercase" style="background-color: brown;" disabled>
+                                                Course Cancelled
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar" />
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar" />
+                <div class="page-content container-fluid">
+                    <div class="course-content row">
+                        <div class="col-7">
+                            <div class="card o-hidden border-0 shadow-lg mb-3">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-3 font-weight-bold border-bottom">
+                                                Course Name
+                                            </div>
+                                            <div class="mb-4 text-lg">
+                                                <span th:text="${course.courseName}" />
+                                            </div>
+                                        </div>
+                                        <div class="course-overview">
+                                            <div class="mb-3 font-weight-bold border-bottom">
+                                                Course Information
+                                            </div>
+                                            <div class="course-info">
+                                            
+                                                <!-- DATA TABLE -->
+                                                <table class="table border">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Credits</th>
+                                                            <td class="w-75" th:text="${course.courseCredits}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Start Date</th>
+                                                            <td class="w-75" th:text="${course.courseStartDate}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">End Date</th>
+                                                            <td class="w-75" th:text="${course.courseEndDate}"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card o-hidden border-0 shadow-lg mb-3">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <div class="mb-3 font-weight-bold border-bottom">
+                                                Student Matriculation Number
+                                            </div>
+                                            <div class="mb-4 text-lg">
+                                                <span th:text="${student.matricNumber}" />
+                                            </div>
+                                        </div>
+                                        <div class="course-overview">
+                                            <div class="mb-3 font-weight-bold border-bottom">
+                                                Student Information
+                                            </div>
+                                            <div class="course-info">
+                                            
+                                                <!-- DATA TABLE -->
+                                                <table class="table border">
+                                                    <tbody>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">First Name</th>
+                                                            <td class="w-75" th:text="${student.firstName}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Last Name</th>
+                                                            <td class="w-75" th:text="${student.lastName}"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Gender</th>
+                                                            <td class="w-75" th:switch="${student.gender}">
+                                                            	<span th:case="M" th:text="Male"></span>
+                                                            	<span th:case="F" th:text="Female"></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="w-25 border-right bg-light">Date of Birth</th>
+                                                            <td class="w-75" th:text="${student.dob}"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <a th:href="@{/course/list}" class="btn btn-outline-danger w-25">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="col-5">
+                            <div class="card o-hidden shadow-lg mb-5">
+                                <div class="card-body p-0">
+                                    <div class="login-card-body">
+                                        <div class="text-left">
+                                            <form
+		                                    	class="user caps-form"
+		                                    	th:object="${grade}"
+		                                    	th:with="baseURL = ${#request.getRequestURI()}"
+		                                    	th:action="@{{baseURL}(baseURL=${baseURL})} + ${action == 'create' ? '/create' : '/update'}"
+		                                    	th:method="${action == 'create' ? 'POST' : 'PUT'}">
+		                                    	<input type="hidden" th:if="${action} == 'create'" th:field="*{id}" value=null />
+			                                    <input type="hidden" name="course.id" th:value="${course.id}" />
+			                                    <input type="hidden" name="student.id" th:value="${student.id}" />
+		                                        <div class="form-group">
+		                                            <label for="credits">Credits</label>
+		                                            <input type="number" class="form-control form-control-user" id="credits"
+		                                            	name="credits" th:field="*{studentCredits}"
+		                                                placeholder="Enter Student's Credits">
+		                                        </div>
+		                                        <div class="form-group">
+		                                            <label for="grading">Grade</label>
+		                                            <select th:field="*{studentGrade}" id="grading" class="form-control" style="font-size: 0.8rem; padding: .375rem .75rem; height: 50px;">
+														<option selected value="">Select Student's Grade</option>
+								                		<option th:value="A">A</option>
+								                		<option th:value="B">B</option>
+								                		<option th:value="C">C</option>
+								                		<option th:value="D">D</option>
+								                		<option th:value="F">F</option>
+								                	</select>
+		                                        </div>
+		                                        
+		                                        <div class="btn-blk d-flex justify-content-end">
+		                                            <a th:href="@{/lecturer/{lecturerId}/course/{courseId}/student(lecturerId=${session.userId}, courseId=${course.id})}" class="btn btn-outline-danger btn-user mr-3">
+		                                                Cancel
+		                                            </a>
+		                                            <input type="submit" 
+		                                            	class="btn btn-primary btn-user"
+		                                            	th:value="${action} == 'create' ? 'Create' : 'Save'" />
+		                                        </div>
+		                                        <hr>
+		                                    </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+          <!-- HEADER -->
+          <h3 class="mb-3">
+            View Student Performance
+          </h3>
+
+          <!-- DATA TABLE -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive p-1">
+                <table class="table table-striped table-bordered table-sm"
+                	cellspacing="0" id="data-table" style="width: 1500px; overflow-x: auto;">
+                  <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Student Name</th>
+                      <th>Grade</th>
+                      <th>GPA</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="grade: ${gradeList}">
+                      <td th:text="${grade.course.courseName}"></td>
+                      <td>
+                      	<span th:text="${grade.student.firstName}"> </span>
+                      	<span th:text="${grade.student.lastName}"></span>
+                      </td>
+                      <td th:text="${grade.studentGrade}"></td>
+                      <td th:text="${grade.studentCredits}"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+    <div id="wrapper">
+        <div th:replace="fragments/layout.html :: sidebar" />
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="fragments/layout.html :: navbar" />
+                <div class="page-content container-fluid">
+                    <!--
+                        INSERT YOUR CODES BELOW THIS.
+                    -->
+                    <h3 class="mb-3">
+                        Enrolled Courses
+                    </h3>
+                    
+                    <!-- ACTION ROW -->
+                    <div class="d-flex justify-content-between mb-3">
+                        <form class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 w-25 mw-100 navbar-search">
+                            <div class="input-group">
+                                <input name="search" type="text" class="form-control bg-light small" placeholder="Search for..."
+                                    aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- DATA GALLERY -->
+                    <div id="gallery">
+                        <div class="row">
+                            <div th:each="enrollment : ${enrollmentList}" id="enrollment-list"
+                            	class="col-xl-4 col-md-6 mb-4 d-flex align-items-stretch">
+                                <a th:href="@{{baseURL}/{courseId}(baseURL=${#request.getRequestURI()}, courseId=${enrollment.course.id})}"
+                                	class="card course-card w-100 border-left-primary shadow h-100 py-2">
+                                	<div th:switch="${enrollment.enrollmentStatus}">
+	                                	<div
+	                                		class="ribbon ribbon-top-right"
+	                                		th:case=0 style="--ribbon-color: gray">
+	                                		<span>Pending</span>
+	                                	</div>
+	                                	<div
+	                                		class="ribbon ribbon-top-right"
+	                                		th:case=1 style="--ribbon-color: green">
+	                                		<span>Accepted</span>
+	                                	</div>
+	                                	<div
+	                                		class="ribbon ribbon-top-right"
+	                                		th:case=2 style="--ribbon-color: red">
+	                                		<span>Rejected</span>	                                	
+	                                	</div>
+	                                	<div
+	                                		class="ribbon ribbon-top-right"
+	                                		th:case=3 style="--ribbon-color: brown">
+	                                		<span>Cancelled</span>	                                	
+	                                	</div>
+	                                	<div class="ribbon ribbon-top-right">
+	                                		<span th:case=0 th:text="Available"></span>	                                	
+	                                	</div>
+	                                </div>
+                                    <div class="card-body pb-2">
+                                        <div class="h4 mr-2 font-weight-bold text-primary text-uppercase mb-1">
+                                            <span class="course-name" th:text="${enrollment.course.courseName}"></span>
+                                        </div>
+                                        <div class="course-detail">
+                                            <div class="course-taught d-flex mt-2 mb-2">
+                                                <span class="text-s text-gray-700 font-weight-bold mr-1 mt-1">Lecturer: </span>
+                                                <div class="text-l badge badge-pill badge-primary ml-1 mr-1 pl-3 pr-3 pt-2">
+                                                	<span th:text="${enrollment.course.lecturer.title == 0 ? 'Mr.' : (enrollment.course.lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+                                                	<span th:text="${enrollment.course.lecturer.firstName}"></span>
+                                                	<span th:text="${enrollment.course.lecturer.lastName}"></span>
+                                                </div>
+                                            </div>
+                                            <div class="text-s mb-0 text-gray-800 mt-2 mb-2">
+                                                <span th:text="${enrollment.course.description}"></span>
+                                            </div>
+                                            <div class="text-s mt-4">
+                                                <span>
+                                                    Course Fee:  
+                                                </span>
+                                                <span class="font-weight-bold">S$</span>
+                                            	<span
+                                            		class="font-weight-bold" th:text="${enrollment.course.courseFee}"></span>
+                                            </div>
+                                            <div class="text-s mt-2 p-0 col-8">
+                                            	<span>Start Date: </span>
+                                            	<span
+                                            		class="font-weight-bold"
+                                            		th:text="${enrollment.course.courseStartDate}"></span>
+                                            </div>
+                                            <div>
+                                            	<span>End Date: </span>
+                                            	<span
+                                            		class="font-weight-bold"
+                                            		th:text="${enrollment.course.courseEndDate}"></span>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

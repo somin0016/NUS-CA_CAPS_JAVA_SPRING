@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+            <!--  HEADER -->
+            <div class="header">
+                <div>
+                    <h3 class="mb-3">
+                        <small>Course:</small> <span th:text="${course.courseName}"></span>
+                    </h3>
+                </div>          
+                <a th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}"
+                    class="ms-auto">
+                    <i class="bi bi-arrow-left-circle"></i>
+                    <span> All Courses</span>
+                </a>
+            </div>
+            <div class="col-md-8 p-0">
+                <div class="card o-hidden border-0 shadow-lg mb-3">
+                    <div class="card-body p-0">
+                        <div class="login-card-body">
+                            <div class="text-left">
+                                <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                    Description
+                                </div>
+                                <div class="mb-4">
+                                    <span th:text="${course.description}" />
+                                </div>
+                            </div>
+                            <div class="course-overview">
+                                <div class="mb-3 text-lg font-weight-bold border-bottom">
+                                    Overview
+                                </div>
+                                <div class="course-info">
+                                    <!-- DATA TABLE -->
+                                    <table class="table border">
+                                        <tbody>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Next Intake</th>
+                                                <td class="w-75" th:text="${course.courseStartDate}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Lecturer</th>
+                                                <td class="w-75">
+                                                    <span th:text="${course.lecturer.title == 0 ? 'Mr.' : (course.lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+                                                    <span th:text = "' ' + ${course.lecturer.firstName} + ' ' + ${course.lecturer.lastName}"></span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Fees</th>
+                                                <td class="w-75" th:text="${course.courseFee}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Duration</th>
+                                                <td class="w-75" th:text="${course.courseDuration}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Capacity</th>
+                                                <td class="w-75" th:text="${course.courseCapacity}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Course Credits</th>
+                                                <td class="w-75" th:text="${course.courseCredits}"></td>
+                                            </tr>
+                                            <tr>
+                                                <th class="w-25 border-right bg-light">Status</th>
+                                                <td class="w-75"th:switch="${course.courseStatus}">
+                                                    <span th:case=1>Available</span>
+                                                    <span th:case=2>Low Vacancy</span>
+                                                    <span th:case=3>Full</span>
+                                                    <span th:case=4>Cancelled</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ACTION ROW -->
+            <div class="d-flex justify-content-between">
+                <!-- <form class="d-none d-sm-inline-block form-inline ml-auto my-2 my-md-0 mw-100 navbar-search">
+                    <div class="input-group">
+                    <input type="text" class="form-control bg-light small" placeholder="Search for..." aria-label="Search"
+                        aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                    </div>
+                </form> -->
+            </div>
+
+            <!-- DATA TABLE -->
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <h4 class="card-title font-weight-bold">Enrolled Students</h4>
+                        </div>
+                        <div th:unless="${countEnrollments == 0 }" class="col-md-3">
+                            <a th:href="@{/admin/} + ${session.userId} + @{/course/} + ${course.id} + @{/student/export}" class="btn btn-warning float-right">Export Enrolled Students</a>
+                        </div>
+                        <!-- ACTION ROW -->
+                        <!-- <div class="col-md-3">
+                            <a th:if="${session.role == 'admin'}"
+                                th:href="@{{baseURL}/create(baseURL=${#request.getRequestURI()})}" class="btn btn-primary mb-3 float-right">
+                                <i class="bi bi-person-add"></i>
+                                Add New Student
+                            </a>
+                        </div> -->
+                    </div>
+                    <div class="table-responsive p-2">
+                        <table class="table table-bordered table-striped" id="data-table">
+                            <thead>
+                            <tr>
+                                <th>Matriculation Number</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Gender</th>
+                                <th>Phone</th>
+                                <th>Status</th>
+                                <th>Grade</th>
+                                <th>GPA</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="enrollment: ${enrollmentList}">
+                                <td th:text="${enrollment.student.matricNumber}"></td>
+                                <td th:text="${enrollment.student.firstName}"></td>
+                                <td th:text="${enrollment.student.lastName}"></td>
+                                <td th:text="${enrollment.student.gender}"></td>
+                                <td th:text="${enrollment.student.phone}"></td>
+                                <td th:switch="${enrollment.enrollmentStatus}">
+                                <span th:case=0>Pending</span>
+                                <span th:case=1>Accepted</span>
+                                <span th:case=2>Rejected</span>
+                                <span th:case=3>Cancelled</span>
+                                </td>
+                                <td th:text="${enrollment.studentGrade != null ? enrollment.studentGrade: '-'}"></td>
+                                <td th:text="${enrollment.studentCredits != null ? enrollment.studentCredits : '-'}"></td>
+                                <td class="table-action">
+                                <a 
+                                    th:if="${session.role == 'lecturer' && enrollment.enrollmentStatus == 1}"
+                                    th:with="uri=${#strings.arraySplit(#request.getRequestURI(), '/')}"
+                                    th:href="@{/lecturer/{lecturerId}/course/{courseId}/student/{studentId}/grading(lecturerId=${uri[1]}, courseId=${uri[3]}, studentId=${enrollment.student.id})}">
+                                    <span>Grade</span>
+                                </a>
+                                <a
+                                    th:if="${session.role == 'admin'}"
+                                    th:href="@{/{role}/{userId}/student/update/{studentId}(role=${session.role}, userId=${session.userId}, studentId=${enrollment.student.id})}" class="btn btn-info">
+                                    <span th:text="#{caption.edit}"></span>
+                                </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+  </div>
+</body>
+
+</html>

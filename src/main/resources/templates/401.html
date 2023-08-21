@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body>
+
+    <div class="wrapper">
+        <div class="container-fluid d-flex align-items-center justify-content-center">
+            <div class="text-center pt-5">
+                <div class="mx-auto error-txt">401</div>
+                <p class="lead text-gray-800 mb-5">Unauthorized</p>
+                <p class="text-gray-500 mb-0">You provided invalid credentials.</p>
+                <a th:href="@{/} + ${session.role} + @{/} + ${session.userId}">&larr; Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

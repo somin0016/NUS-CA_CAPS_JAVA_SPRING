@@ -1,0 +1,200 @@
+/*!
+ * FOR OVERRIDING AND ADDING CUSTOM STYLES
+ */
+
+.sidebar .sidebar-brand {
+    font-size: 2rem;
+}
+
+.login-card-body {
+    padding: 24px 24px;
+}
+
+.sign-in-txt {
+    color: #000000;
+    font-family: "Inter", sans-serif;
+    font-size: 35px;
+    margin-bottom: 10px;
+    font-variation-settings: 'wght' 900;
+}
+
+.sign-in-ttl {
+    font-variation-settings: 'wght' 900;
+    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !important;
+}
+
+form.user .btn-user {
+    border-radius: 0.35rem;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-accent-bg: transparent;
+    --bs-table-striped-color: #212529;
+    --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
+    --bs-table-active-color: #212529;
+    --bs-table-active-bg: rgba(0, 0, 0, 0.1);
+    --bs-table-hover-color: #212529;
+    --bs-table-hover-bg: #eaeaf1;
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    vertical-align: top;
+    border-color: #dee2e6;
+}
+
+.table-action {
+    min-width: 100px;
+    text-align: center;
+    max-width: 150px;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.manage-form-ttl {
+    color: #000000;
+    font-family: "Inter", sans-serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+    font-variation-settings: 'wght' 900;
+}
+
+.caps-form label {
+    font-variation-settings: 'wght' 900;
+}
+
+.error-txt {
+    color: #4e73df;
+    font-size: 8rem;
+    line-height: 1;
+}
+
+/** 
+* LANDING
+*
+**/
+#data-table .table .row {
+    overflow: hidden;
+}
+
+.landing-head .h3 {
+    font-family: "Inter", sans-serif;
+    font-variation-settings: 'wght' 800;
+}
+
+#landing-content .h4 {
+    font-variation-settings: 'wght' 800;
+}
+
+#head-banner .card {
+    position: relative;
+    overflow: hidden;
+}
+
+#head-banner .card:hover .card-img-overlay {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    transition: background-image 0.5s ease;
+}
+
+#head-banner .card-img-overlay {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+}
+
+.carousel-container {
+    max-height: 222px;
+}
+
+.carousel-container .carousel-item {
+    max-height: 222px;
+}
+
+.carousel-container .carousel-item img {
+    max-height: 222px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    border-radius: .35rem;
+}
+
+.carousel-caption {
+    font-variation-settings: 'wght' 600;
+}
+
+.carousel-item {
+    position: relative;
+  }
+  
+  .carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    z-index: 1;
+  }
+
+#landing #content-wrapper {
+    padding: 50px;
+    background-color: #1d427c !important;
+}
+
+#landing #content {
+    background-color: #f8f9fc;
+    padding: 25px !important;
+    padding-top: 50px !important;
+}
+
+
+.login-body {
+    padding: 18px;
+    padding-top: 24px;
+}
+
+.login-body .h3 {
+    font-family: "Inter", sans-serif;
+    font-variation-settings: 'wght' 700;
+}
+.login-ttl .h3 {
+    font-family: "Inter", sans-serif;
+    font-variation-settings: 'wght' 700;
+}
+
+.login-content .btn {
+    font-size: 0.8rem;
+    padding: 0.75rem 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: padding-left 0.3s;
+    margin-bottom: 8px;
+    background-color: #1d427c !important;
+}
+
+.login-content .btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s;
+    z-index: -1;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.login-content .btn:hover {
+    padding-left: 30px;
+    /* Adjust the padding value as needed */
+}
+
+.login-content .btn:hover::before {
+    left: 0;
+}
+
+.form .btn-outline-danger:hover {
+    color: #FFFFFF !important;
+}

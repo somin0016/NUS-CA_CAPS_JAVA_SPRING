@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+          <!--  HEADER -->
+          <div class="header">
+            <div>
+              <h3 class="mb-3">
+                Manage Enrollments
+              </h3>
+            </div>          
+	          <a th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}"
+	          	class="ms-auto">
+	          	<i class="bi bi-arrow-left-circle"></i>
+	          	<span> All Enrollments</span>
+	          </a>
+	       </div>
+
+          <!-- DATA TABLE -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-9">
+                  <h4 class="card-title font-weight-bold">Manage Students</h4>
+                </div>
+                <div class="col-md-3">
+                  <a th:href="@{/admin/}+ ${session.userId} + @{/export/enrollments}" class="btn btn-warning float-right">Export All</a>
+                </div>
+              </div>
+              <div class="table-responsive p-2">
+                <table class="table table-striped" id="data-table">
+                  <thead>
+                    <tr>
+                      <th>Course</th>
+                      <th>Lecturer</th>
+                      <th>Matriculation Number</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Gender</th>
+                      <th>Phone</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="enrollment: ${enrollmentList}">
+                      <td th:text="${enrollment.course.courseName}"></td>
+                      <td th:with="lecturer = ${enrollment.course.lecturer}">
+                      	<span th:text="${lecturer.title == 0 ? 'Mr.' : (lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+                      	<span th:text = "' ' + ${lecturer.firstName} + ' ' + ${lecturer.lastName}"></span>
+                      </td>
+                      <td th:text="${enrollment.student.matricNumber}"></td>
+                      <td th:text="${enrollment.student.firstName}"></td>
+                      <td th:text="${enrollment.student.lastName}"></td>
+                      <td th:text="${enrollment.student.gender}"></td>
+                      <td th:text="${enrollment.student.phone}"></td>
+                      <td th:switch="${enrollment.enrollmentStatus}">
+                      	<span th:case=0>Pending</span>
+                      	<span th:case=1>Accepted</span>
+                      	<span th:case=2>Rejected</span>
+                      	<span th:case=3>Cancelled</span>
+                      </td>
+                      <td class="table-action">
+                      	<a 
+                      		th:if="${session.role == 'lecturer' && enrollment.enrollmentStatus == 2}"
+                      		th:with="uri=${#strings.arraySplit(#request.getRequestURI(), '/')}"
+                      		th:href="@{/lecturer/{lecturerId}/course/{courseId}/student/{studentId}/grading/create(lecturerId=${uri[1]}, courseId=${uri[3]}, studentId=${enrollment.student.id})}">
+                      		<span>Grade</span>
+                      	</a>
+                        <a
+                        	th:if="${(enrollment.enrollmentStatus == 0 || enrollment.enrollmentStatus == 2) && session.role == 'admin'}"
+                        	th:href="@{/{role}/{userId}/course/{courseId}/student/{studentId}/1(role=${session.role}, userId=${session.userId}, courseId=${enrollment.course.id}, studentId=${enrollment.student.id})}"
+                        	class="btn btn-success">
+                          <span>Accept</span>
+                        </a>
+                        <a
+                        	th:if="${(enrollment.enrollmentStatus == 0 || enrollment.enrollmentStatus == 1) && session.role == 'admin'}"
+                        	th:href="@{/{role}/{userId}/course/{courseId}/student/{studentId}/2(role=${session.role}, userId=${session.userId}, courseId=${enrollment.course.id}, studentId=${enrollment.student.id})}"
+                        	class="btn btn-danger mt-2">
+                          <span>Reject</span>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

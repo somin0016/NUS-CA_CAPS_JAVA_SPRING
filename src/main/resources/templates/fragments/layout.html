@@ -1,0 +1,323 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="html_head" id="html_head">
+    <meta charset="ISO-8859-1">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>CAPS - Course Application Processing</title>
+    <link rel="icon" type="image/ico" th:href="@{/public/favicon.ico}" />
+
+    <!-- BOOTSTRAP -->
+    <link rel="stylesheet" th:href="@{https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css}">
+
+    <!-- CUSTOM CSS -->
+    <link rel="stylesheet" th:href="@{/public/css/default.css}" />
+    <link rel="stylesheet" th:href="@{/public/css/common.css}" />
+    <link rel="stylesheet" th:href="@{/public/css/style.css}" />
+
+    <!-- FONT -->
+    <link th:href="@{/public/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- BOOTSTRAP ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+    <script th:src="@{/public/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/public/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+    <!-- CORE PLUGIN JAVASCRIPT -->
+    <script th:src="@{/public/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    
+    <!-- DATA TABLE -->
+    <script th:src="@{https://code.jquery.com/jquery-3.5.1.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js}"></script>
+    <script th:src="@{/public/js/data-table.js}"></script>
+    
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css" />
+
+    <!-- CUSTOM SCRIPTS FOR ALL PAGES -->
+    <script th:src="@{/public/js/script.js}"></script>
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <ul th:fragment="sidebar" id="accordionSidebar"
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion">
+
+        <!-- SIDEBAR - BRAND -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{'/'}" style="background-color: #ee8122;">
+            <div class="sidebar-brand-icon">
+                <img class="img-profile" style="width: 45px; margin-left: -15px;" th:src="@{/public/images/logo.png}" />
+            </div>
+            <div class="sidebar-brand-text d-flex align-items-center py-2">
+                CAPS
+            </div>
+        </a>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider mt-2">
+
+        <!-- Dashboard -->
+        <div class="sidebar-heading">
+            Main Menu
+        </div>
+        <li class="nav-item active">
+            <a class="nav-link" th:href="@{/{role}/{userId}(role=${session.role}, userId=${session.userId})}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+
+        <!-- ADMIN -->
+        <div th:if="${session.role == 'admin'}">
+            <div class="sidebar-heading">
+                Admin Menu
+            </div>
+
+            <!-- Admin - Students -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#admin-collapseStudents"
+                    aria-expanded="true" aria-controls="admin-collapseStudents">
+                    <i class="bi bi-person-vcard-fill"></i>
+                    <span>Manage Students</span>
+                </a>
+                <div id="admin-collapseStudents" class="collapse" aria-labelledby="headingTwo"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/student(role=${session.role}, userId=${session.userId})}">
+                            View Students
+                        </a>
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/student/create(role=${session.role}, userId=${session.userId})}">
+                            Add New Student
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Admin - Lecturers -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#admin-collapseLecturers"
+                    aria-expanded="true" aria-controls="admin-collapseLecturers">
+                    <i class="bi bi-person-lines-fill"></i>
+                    <span>Manage Lecturers</span>
+                </a>
+                <div id="admin-collapseLecturers" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/lecturer(role=${session.role}, userId=${session.userId})}">
+                            View Lecturers
+                        </a>
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/lecturer/create(role=${session.role}, userId=${session.userId})}">
+                            Add New Lecturer
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Admin - Courses -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#admin-collapseCourses"
+                    aria-expanded="true" aria-controls="admin-collapseCourses">
+                    <i class="bi bi-book-half"></i>
+                    <span>Manage Courses</span>
+                </a>
+                <div id="admin-collapseCourses" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}">
+                            View Courses
+                        </a>
+                        <a class="collapse-item"
+                            th:href="@{/{role}/{userId}/course/create(role=${session.role}, userId=${session.userId})}">
+                            Add New Course
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Admin - Enrollments -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#admin-collapseEnrolments"
+                    aria-expanded="true" aria-controls="admin-collapseEnrolments">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span>Manage Enrollment</span>
+                </a>
+                <div id="admin-collapseEnrolments" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded p-0">
+                        <a class="collapse-item"
+	                        th:href="@{/{role}/{userId}/enrollment(role=${session.role}, userId=${session.userId})}">
+	                        View Enrollments
+	                    </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Admin - Update Requests -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/request(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-person-fill-check"></i>
+                    <span>View Update Requests</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </div>
+
+        <!-- LECTURER -->
+        <div th:if="${session.role == 'lecturer'}">
+            <div class="sidebar-heading">
+                Lecturer Menu
+            </div>
+            
+            <!-- Lecturer - Course -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-person-fill-check"></i>
+                    <span>View Courses</span>
+                </a>
+            </li>
+
+            <!-- Lecturer - Update Request -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/request(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-person-fill-check"></i>
+                    <span>View Update Requests</span>
+                </a>
+            </li>
+
+            <!-- Lecturer - Student -->
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/{role}/{userId}/student/perf(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-person-fill-check"></i>
+                    <span>View Student Performance</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </div>
+
+        <!-- STUDENT -->
+        <div th:if="${session.role == 'student'}">
+            <div class="sidebar-heading">
+                Student Menu
+            </div>
+
+            <!-- Student - Courses -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/course(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-journals"></i>
+                    <span>View Available Courses</span>
+                </a>
+            </li>
+
+            <!-- Student - Enrollment -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/course/enrolled(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-person-plus-fill"></i>
+                    <span>View Enrolled Courses</span>
+                </a>
+            </li>
+
+            <!-- Student - Grade -->
+            <li class="nav-item">
+                <a class="nav-link"
+                    th:href="@{/{role}/{userId}/grades(role=${session.role}, userId=${session.userId})}">
+                    <i class="bi bi-book-half"></i>
+                    <span>Grades and GPA</span>
+                </a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+        </div>
+
+        <!-- HEADING -->
+        <hr class="sidebar-divider mt-auto">
+        <div class="sidebar-heading">
+            User Menu
+        </div>
+
+        <!-- LOGOUT -->
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}">
+                <i class="bi bi-box-arrow-left"></i>
+                <span>Logout</span></a>
+        </li>
+
+        <!-- Divider -->
+        <hr class="sidebar-divider d-none d-md-block">
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:fragment="navbar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <div class="nav-link dropdown-toggle" href="#" aria-expanded="false">
+                            <div class="d-flex">
+                                <span class="mr-3 d-none d-lg-inline text-gray-600" style="position: relative;">
+                                    <span th:text="${session.username}" class="font-weight-bold"></span>
+                                    <span th:text="${session.role}" class="text-gray-600 small text-capitalize mt-2" style="position: absolute;right: 0;bottom: -5px;">
+                                    </span>
+                                </span>
+                                <img class="img-profile rounded-circle" th:src="@{/public/images/winter.jpg}">
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </nav>
+            <!-- End of Topbar -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Your Website 2021</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+</body>

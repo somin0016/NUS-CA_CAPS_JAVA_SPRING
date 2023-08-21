@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+          <!-- HEADER -->
+          <h3 class="mb-3">
+            Manage Lecturers
+          </h3>
+
+          <!-- ACTION ROW -->
+          <div class="d-flex justify-content-between">
+            <a class="btn btn-primary mb-3"
+            	th:href="@{/{role}/{userId}/lecturer/create(role=${session.role}, userId=${session.userId})}">
+              <i class="bi bi-person-add"></i>
+              Add New Lecturer
+            </a>
+          </div>
+
+          <!-- DATA TABLE -->
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-9">
+                  <h4 class="card-title font-weight-bold">Lecturer List</h4>
+                </div>
+                <div class="col-md-3">
+                  <a th:if="${session.role == 'admin'}" th:href="@{/admin/}+ ${session.userId} + @{/export/lecturers}" class="btn btn-warning float-right">Export All</a>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table border-bottom" id="data-table">
+                  <thead>
+                    <tr>
+                      <th>Lecturer Code</th>
+                      <th>Name</th>
+                      <th>Designation</th>
+                      <th>Phone</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="lecturer: ${lecturerList}">
+                      <td th:text="${lecturer.code}"></td>
+                      <td>
+                      	<span th:text="${lecturer.title == 0 ? 'Mr.' : (lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+                      	<span th:text = "' ' + ${lecturer.firstName} + ' ' + ${lecturer.lastName}"></span>
+                      </td>
+                      <td th:text="${lecturer.designation}"></td>
+                      <td th:text="${lecturer.phone}"></td>
+                      <td class="table-action">
+                        <a class="btn btn-info"
+                        	th:href="@{{baseURL}/update/{lecturerId}(baseURL=${#request.getRequestURI()}, lecturerId=${lecturer.id})}">
+                          <span th:text="#{caption.edit}"></span>
+                        </a>
+                        <a class="btn btn-danger"
+                        	th:href="@{{baseURL}/delete/{lecturerId}(baseURL=${#request.getRequestURI()}, lecturerId=${lecturer.id})}">
+                          <span th:text="#{caption.delete}"></span>
+                        </a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

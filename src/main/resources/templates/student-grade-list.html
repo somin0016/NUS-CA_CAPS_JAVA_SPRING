@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/layout.html :: html_head" />
+
+<body id="page-top">
+  <div id="wrapper">
+    <div th:replace="fragments/layout.html :: sidebar"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+      <div id="content">
+        <nav th:replace="fragments/layout.html :: navbar"></nav>
+        <div class="page-content container-fluid">
+
+          <!--  HEADER -->
+          <h3 class="mb-3">
+            Grades and GPA
+          </h3>
+
+          <!-- DATA TABLE -->
+          <div class="card">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table border-bottom">
+                  <thead>
+                    <tr>
+                      <th>Course Name</th>
+                      <th>Course Credits</th>
+                      <th>Lecturer</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Grade</th>
+                      <th>GPA</th>
+                    </tr>
+                  </thead>
+                  <tbody th:each="grade: ${gradeList}">
+                    <tr>
+                      <td th:text="${grade.course.courseName}"></td>
+                      <td th:text="${grade.course.courseCredits}"></td>
+                      <td>
+                      	<span th:text="${grade.course.lecturer.title == 0 ? 'Mr.' : (grade.course.lecturer.title == 1 ? 'Mrs.' : 'Ms.')}"></span>
+                      	<span th:text = "' ' + ${grade.course.lecturer.firstName} + ' ' + ${grade.course.lecturer.lastName}"></span>
+                      </td>
+                      <td th:text="${grade.course.courseStartDate}"></td>
+                      <td th:text="${grade.course.courseEndDate}"></td>
+                      <td th:text="${grade.studentGrade}"></td>
+                      <td th:text="${grade.studentCredits}"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>
